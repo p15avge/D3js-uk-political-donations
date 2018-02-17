@@ -271,15 +271,17 @@ function moveToFunds(alpha) {
 
 function moveToAmounts(alpha) {
 	return function(d) {
-		var centreY = entityCentres[d.entity].y;
-		var centreX = entityCentres[d.entity].x;
-		if (d.value < 100000) {
-			centreY = 300;
-			centreX = 350;
-		} else {
-			centreX = entityCentres[d.entity].x + 60;
-			centreY = 380;
+		if (d.value <= 10000) { 
+			centreX = svgCentre.x ;
+			centreY = svgCentre.y -50;
+		} else if (d.value <= 100000) { 
+			centreX = svgCentre.x + 150;
+			centreY = svgCentre.y ;
+		} else if (d.value <= 10000000){ 
+			centreX = svgCentre.x + 300;
+			centreY = svgCentre.y + 50;
 		}
+
 		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
 		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
 	};
