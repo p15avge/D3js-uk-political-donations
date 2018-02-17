@@ -67,7 +67,7 @@ function transition(name) {
 		$("#view-donor-type").fadeIn(1000);
 		return donorType();
 	}
-	if (name === "group-by-money-source")
+	if (name === "group-by-money-source"){
 		$("#initial-content").fadeOut(250);
 		$("#value-scale").fadeOut(250);
 		$("#view-donor-type").fadeOut(250);
@@ -75,6 +75,16 @@ function transition(name) {
 		$("#view-source-type").fadeIn(1000);
 		return fundsType();
 	}
+	if (name === "group-by-amount")
+		$("#initial-content").fadeOut(250);
+		$("#value-scale").fadeOut(250);
+		$("#view-donor-type").fadeOut(250);
+		$("#view-party-type").fadeOut(250);
+		$("#view-source-type").fadeIn(1000);
+		return amountType();
+}
+
+
 
 function start() {
 
@@ -92,6 +102,7 @@ function start() {
 		.attr("r", 0)
 		.style("fill", function(d) { return fill(d.party); })
 		.on("mouseover", mouseover)
+		.on("click", search)
 		.on("mouseout", mouseout);
 		// Alternative title based 'tooltips'
 		// node.append("title")
@@ -147,6 +158,14 @@ function parties(e) {
 
 		node.attr("cx", function(d) { return d.x; })
 			.attr("cy", function(d) {return d.y; });
+}
+
+function amountType() {
+	force.gravity(0)
+		.friction(0.75)
+		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
+		.on("tick", types)
+		.start();
 }
 
 function entities(e) {
@@ -344,9 +363,16 @@ function mouseover(d, i) {
     .style("top", (parseInt(d3.select(this).attr("cy") - (d.radius+150)) + offset.top) + "px")
 		.html(infoBox)
 			.style("display","block");
+	responsiveVoice.speak(donor + amount);
 	
 	
 	}
+
+function search(d){
+	var donor = d.donor;
+	var win = window.open("https://www.google.com/search?q=" + donor, '_blank');
+ 	win.focus();
+}
 
 function mouseout() {
 	// no more tooltips
@@ -356,7 +382,13 @@ function mouseout() {
 
 		d3.select(".tooltip")
 			.style("display", "none");
+	
+		responsiveVoice.cancel();
 		}
+
+		
+
+
 
 $(document).ready(function() {
 		d3.selectAll(".switch").on("click", function(d) {
