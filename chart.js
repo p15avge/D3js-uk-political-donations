@@ -260,6 +260,24 @@ function moveToFunds(alpha) {
 	};
 }
 
+function moveToAmounts(alpha) {
+	return function(d) {
+		var centreY = entityCentres[d.entity].y;
+		var centreX = entityCentres[d.entity].x;
+		var mosie = d3.select(this);
+		var amount = mosie.attr("amount");
+		if (amount < 1000000) {
+			centreY = 300;
+			centreX = 350;
+		} else {
+			centreX = entityCentres[d.entity].x + 60;
+			centreY = 380;
+		}
+		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
+		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
+	};
+}
+
 // Collision detection function by m bostock
 function collide(alpha) {
   var quadtree = d3.geom.quadtree(nodes);
