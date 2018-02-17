@@ -271,6 +271,8 @@ function moveToFunds(alpha) {
 
 function moveToAmounts(alpha) {
 	return function(d) {
+		var centreY = entityCentres[d.entity].y;
+		var centreX = entityCentres[d.entity].x;
 		if (d.value <= 10000) { 
 			centreX = svgCentre.x ;
 			centreY = svgCentre.y -50;
