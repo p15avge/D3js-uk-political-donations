@@ -273,9 +273,7 @@ function moveToAmounts(alpha) {
 	return function(d) {
 		var centreY = entityCentres[d.entity].y;
 		var centreX = entityCentres[d.entity].x;
-		var mosie = d3.select(this);
-		var amount = mosie.attr("amount");
-		if (amount < 1000000) {
+		if (d.value < 1000000) {
 			centreY = 300;
 			centreX = 350;
 		} else {
