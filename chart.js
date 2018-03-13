@@ -75,6 +75,17 @@ function transition(name) {
 		$("#view-source-type").fadeIn(1000);
 		return fundsType();
 	}
+	if (name === "group-by-amount") {
+		sound.play();
+		$("#initial-content").fadeOut(250);
+		$("#value-scale").fadeOut(250);
+		$("#view-donor-type").fadeOut(250);
+		$("#view-party-type").fadeOut(250);
+		$("#view-source-type").fadeOut(1000);
+		$("#view-amount-type").fadeIn(250);
+		return amountType();
+	}
+}
 
 function start() {
 
@@ -142,6 +153,14 @@ function fundsType() {
 		.start();
 }
 
+function amountType() {
+	force.gravity(0)
+		.friction(0.75)
+		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
+		.on("tick", amounts)
+		.start();
+}
+
 function parties(e) {
 	node.each(moveToParties(e.alpha));
 
@@ -167,6 +186,13 @@ function types(e) {
 function all(e) {
 	node.each(moveToCentre(e.alpha))
 		.each(collide(0.001));
+
+		node.attr("cx", function(d) { return d.x; })
+			.attr("cy", function(d) {return d.y; });
+}
+
+function amounts(e) {
+	node.each(moveToAmount(e.alpha));
 
 		node.attr("cx", function(d) { return d.x; })
 			.attr("cy", function(d) {return d.y; });
@@ -236,6 +262,34 @@ function moveToFunds(alpha) {
 			centreX = entityCentres[d.entity].x + 60;
 			centreY = 380;
 		}
+		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
+		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
+	};
+}
+
+function moveToAmount(alpha) {
+	return function(d) {
+		
+		if (d.value <= 50000) { 
+			centreX = svgCentre.x ;
+			centreY = svgCentre.y + 50;
+		} else if (d.value <= 100000) { 
+			centreX = svgCentre.x + 250;
+			centreY = svgCentre.y + 60;
+		} else if (d.value <= 500000){ 
+			centreX = svgCentre.x + 450;
+			centreY = svgCentre.y + 70;
+		} else if (d.value <= 1000000) {
+			centreX = svgCentre.x;
+			centreY = svgCentre.y - 160;
+		} else if (d.value <= 5000000) {
+			centreX = svgCentre.x + 260;
+			centreY = svgCentre.y - 170;
+		} else{
+			centreX = svgCentre.x + 460;
+			centreY = svgCentre.y - 180;
+		}
+
 		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
 		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
 	};
@@ -320,13 +374,20 @@ function mouseover(d, i) {
 								+ "<p> Type of donor: <b>" + entity + "</b></p>"
 								+ "<p> Total value: <b>&#163;" + comma(amount) + "</b></p>";
 
+	// image url that want to check
+	var imageFile = "https://raw.githubusercontent.com/ioniodi/D3js-uk-political-donations/master/photos/" + donor + ".ico";
 
+	
+	
+// *******************************************
+	
 	mosie.classed("active", true);
 	d3.select(".tooltip")
   	.style("left", (parseInt(d3.select(this).attr("cx") - 80) + offset.left) + "px")
     .style("top", (parseInt(d3.select(this).attr("cy") - (d.radius+150)) + offset.top) + "px")
 		.html(infoBox)
 			.style("display","block");
+	responsiveVoice.speak("The" + d.donor + "donated an amount of" + d.amount + "british pounds!");
 	}
 
 function mouseout() {
