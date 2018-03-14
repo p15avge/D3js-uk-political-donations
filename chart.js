@@ -386,7 +386,7 @@ function mouseover(d, i) {
     .style("top", (parseInt(d3.select(this).attr("cy") - (d.radius+150)) + offset.top) + "px")
 		.html(infoBox)
 			.style("display","block");
-	responsiveVoice.speak("The" + d.donor + "donated an amount of" + d.amount + "british pounds!");
+	responsiveVoice.speak(donor + amount);
 	}
 
 function mouseout() {
@@ -397,6 +397,7 @@ function mouseout() {
 
 		d3.select(".tooltip")
 			.style("display", "none");
+	 responsiveVoice.cancel();
 		}
 
 $(document).ready(function() {
