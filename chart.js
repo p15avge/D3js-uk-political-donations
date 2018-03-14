@@ -79,7 +79,7 @@ function transition(name) {
 		$("#view-amount-type").fadeOut(250); 
 		return fundsType();
 	}
-	if (name === "group-by-amount") {
+	if (name === "group-by-amount") 
 		sound.play();
 		$("#initial-content").fadeOut(250);
 		$("#value-scale").fadeOut(250);
@@ -88,7 +88,7 @@ function transition(name) {
 		$("#view-source-type").fadeOut(250);
 		$("#view-amount-type").fadeIn(1000);
 		return amountType();
-	}
+	
 }
 
 function start() {
@@ -142,20 +142,7 @@ function partyGroup() {
 		.colourByParty();
 }
 
-function amountType() {
-	force.gravity(0)
-		.friction(0.75)
-		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
-		.on("tick", amounts)
-		.start();
-}
 
-function amounts(e) {
-	node.each(moveToAmount(e.alpha));
-
-		node.attr("cx", function(d) { return d.x; })
-			.attr("cy", function(d) {return d.y; });
-}
 
 
 function donorType() {
@@ -181,6 +168,14 @@ function parties(e) {
 		node.attr("cx", function(d) { return d.x; })
 			.attr("cy", function(d) {return d.y; });
 }
+function amountType() {
+	force.gravity(0)
+		.friction(0.75)
+		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
+		.on("tick", amounts)
+		.start();
+}
+
 
 function entities(e) {
 	node.each(moveToEnts(e.alpha));
@@ -191,6 +186,13 @@ function entities(e) {
 
 function types(e) {
 	node.each(moveToFunds(e.alpha));
+
+
+		node.attr("cx", function(d) { return d.x; })
+			.attr("cy", function(d) {return d.y; });
+}
+function amounts(e) {
+	node.each(moveToAmounts(e.alpha));
 
 
 		node.attr("cx", function(d) { return d.x; })
@@ -242,27 +244,7 @@ function moveToParties(alpha) {
 		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
 	};
 }
-function moveToAmount(alpha) {
-	return function(d) {
-		
-		if (d.value <= 25000) { 
-			centreX = svgCentre.x ;
-			centreY = svgCentre.y + 80;
-		} else if (d.value <= 500000) { 
-			centreX = svgCentre.x + 350;
-			centreY = svgCentre.y + 80;
-		} else if (d.value <= 5000000) { 
-			centreX = svgCentre.x ;
-			centreY = svgCentre.y - 180;
-		} else{
-			centreX = svgCentre.x + 350;
-			centreY = svgCentre.y - 180;
-		}
 
-		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
-		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
-	};
-}
 
 
 function moveToEnts(alpha) {
@@ -294,6 +276,29 @@ function moveToFunds(alpha) {
 		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
 	};
 }
+function moveToAmounts(alpha) {
+	return function(d) {
+		var centreY = entityCentres[d.entity].y;
+		var centreX = entityCentres[d.entity].x;
+		if (d.value <= 25000) { 
+			centreX = svgCentre.x ;
+			centreY = svgCentre.y;
+		} else if (d.value <= 250000) { 
+			centreX = svgCentre.x + 150;
+			centreY = svgCentre.y;
+		} else if (d.value <= 9999999){ 
+			centreX = svgCentre.x + 300;
+			centreY = svgCentre.y;
+		}else{
+			centreX = svgCentre.x + 450;
+			centreY = svgCentre.y;
+		}
+
+		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
+		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
+	};
+}
+
 
 
 // Collision detection function by m bostock
