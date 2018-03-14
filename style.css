@@ -39,27 +39,6 @@ li {
     left: 650px;
     width: 272px;
 }
-/* position of new text of new split by */
-#ID25K {
-    left: 120px;
-    top: 500px;
-    position: absolute;
-}
-#ID500K {
-    left: 550px;
-    top: 500px;
-    position: absolute;    
-}
-#ID5M {
-    left: 120px;
-    top: 140px;
-    position: absolute; 
-}
-#ID20M {    
-    left: 550px;
-    top: 140px;
-    position: absolute;    
-}
 
 /*  Public or private funds view */
 
