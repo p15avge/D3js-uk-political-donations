@@ -48,6 +48,7 @@ function transition(name) {
 		$("#view-donor-type").fadeOut(250);
 		$("#view-source-type").fadeOut(250);
 		$("#view-party-type").fadeOut(250);
+		$("#view-amount-type").fadeOut(250);
 		return total();
 		//location.reload();
 	}
@@ -57,6 +58,7 @@ function transition(name) {
 		$("#view-donor-type").fadeOut(250);
 		$("#view-source-type").fadeOut(250);
 		$("#view-party-type").fadeIn(1000);
+		$("#view-amount-type").fadeOut(250); 
 		return partyGroup();
 	}
 	if (name === "group-by-donor-type") {
@@ -65,6 +67,7 @@ function transition(name) {
 		$("#view-party-type").fadeOut(250);
 		$("#view-source-type").fadeOut(250);
 		$("#view-donor-type").fadeIn(1000);
+		$("#view-amount-type").fadeOut(250);
 		return donorType();
 	}
 	if (name === "group-by-money-source")
@@ -73,6 +76,7 @@ function transition(name) {
 		$("#view-donor-type").fadeOut(250);
 		$("#view-party-type").fadeOut(250);
 		$("#view-source-type").fadeIn(1000);
+		$("#view-amount-type").fadeOut(250); 
 		return fundsType();
 	}
 	if (name === "group-by-amount") {
@@ -81,8 +85,8 @@ function transition(name) {
 		$("#value-scale").fadeOut(250);
 		$("#view-donor-type").fadeOut(250);
 		$("#view-party-type").fadeOut(250);
-		$("#view-source-type").fadeOut(1000);
-		$("#view-amount-type").fadeIn(250);
+		$("#view-source-type").fadeOut(250);
+		$("#view-amount-type").fadeIn(1000);
 		return amountType();
 	}
 }
@@ -103,7 +107,8 @@ function start() {
 		.attr("r", 0)
 		.style("fill", function(d) { return fill(d.party); })
 		.on("mouseover", mouseover)
-		.on("mouseout", mouseout);
+		.on("mouseout", mouseout)
+		.on("click", function(d) {window.open("https://www.google.gr/search?client=ubuntu&hs=ieJ&channel=fs&dcr=0&ei=2aCdWuT6JIWxsAG4uq_ABw&q=" + d.donor);});
 		// Alternative title based 'tooltips'
 		// node.append("title")
 		//	.text(function(d) { return d.donor; });
@@ -136,6 +141,21 @@ function partyGroup() {
 		.start()
 		.colourByParty();
 }
+function amountType() {
+	force.gravity(0)
+		.friction(0.75)
+		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
+		.on("tick", amounts)
+		.start();
+}
+
+function amounts(e) {
+	node.each(moveToAmount(e.alpha));
+
+		node.attr("cx", function(d) { return d.x; })
+			.attr("cy", function(d) {return d.y; });
+}
+
 
 function donorType() {
 	force.gravity(0)
@@ -150,14 +170,6 @@ function fundsType() {
 		.friction(0.75)
 		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
 		.on("tick", types)
-		.start();
-}
-
-function amountType() {
-	force.gravity(0)
-		.friction(0.75)
-		.charge(function(d) { return -Math.pow(d.radius, 2.0) / 3; })
-		.on("tick", amounts)
 		.start();
 }
 
@@ -186,14 +198,6 @@ function types(e) {
 function all(e) {
 	node.each(moveToCentre(e.alpha))
 		.each(collide(0.001));
-
-		node.attr("cx", function(d) { return d.x; })
-			.attr("cy", function(d) {return d.y; });
-}
-
-function amounts(e) {
-	node.each(moveToAmount(e.alpha));
-
 		node.attr("cx", function(d) { return d.x; })
 			.attr("cy", function(d) {return d.y; });
 }
@@ -237,6 +241,28 @@ function moveToParties(alpha) {
 	};
 }
 
+function moveToAmount(alpha) {
+	return function(d) {
+		
+		if (d.value <= 25000) { 
+			centreX = svgCentre.x ;
+			centreY = svgCentre.y + 80;
+		} else if (d.value <= 500000) { 
+			centreX = svgCentre.x + 350;
+			centreY = svgCentre.y + 80;
+		} else if (d.value <= 5000000) { 
+			centreX = svgCentre.x ;
+			centreY = svgCentre.y - 180;
+		} else{
+			centreX = svgCentre.x + 350;
+			centreY = svgCentre.y - 180;
+		}
+
+		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
+		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
+	};
+}
+
 function moveToEnts(alpha) {
 	return function(d) {
 		var centreY = entityCentres[d.entity].y;
@@ -262,34 +288,6 @@ function moveToFunds(alpha) {
 			centreX = entityCentres[d.entity].x + 60;
 			centreY = 380;
 		}
-		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
-		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
-	};
-}
-
-function moveToAmount(alpha) {
-	return function(d) {
-		
-		if (d.value <= 50000) { 
-			centreX = svgCentre.x ;
-			centreY = svgCentre.y + 50;
-		} else if (d.value <= 100000) { 
-			centreX = svgCentre.x + 250;
-			centreY = svgCentre.y + 60;
-		} else if (d.value <= 500000){ 
-			centreX = svgCentre.x + 450;
-			centreY = svgCentre.y + 70;
-		} else if (d.value <= 1000000) {
-			centreX = svgCentre.x;
-			centreY = svgCentre.y - 160;
-		} else if (d.value <= 5000000) {
-			centreX = svgCentre.x + 260;
-			centreY = svgCentre.y - 170;
-		} else{
-			centreX = svgCentre.x + 460;
-			centreY = svgCentre.y - 180;
-		}
-
 		d.x += (centreX - d.x) * (brake + 0.02) * alpha * 1.1;
 		d.y += (centreY - d.y) * (brake + 0.02) * alpha * 1.1;
 	};
