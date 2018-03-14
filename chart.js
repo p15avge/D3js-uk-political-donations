@@ -80,7 +80,6 @@ function transition(name) {
 		return fundsType();
 	}
 	if (name === "group-by-amount") 
-		sound.play();
 		$("#initial-content").fadeOut(250);
 		$("#value-scale").fadeOut(250);
 		$("#view-donor-type").fadeOut(250);
@@ -107,7 +106,7 @@ function start() {
 		.attr("r", 0)
 		.style("fill", function(d) { return fill(d.party); })
 		.on("mouseover", mouseover)
-	        .on("click", function(d) {window.open("http://www.google.com/search?q=" + d.donor);});
+	        .on("click", function(d) {window.open("http://www.google.com/search?q=" + d.donor);})
 		.on("mouseout", mouseout);
 		// Alternative title based 'tooltips'
 		// node.append("title")
