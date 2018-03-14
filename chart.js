@@ -367,8 +367,9 @@ function mouseover(d, i) {
 	var party = d.partyLabel;
 	var entity = d.entityLabel;
 	var offset = $("svg").offset();
-	var infoBox = "<p> Source: <b>" + donor + "</b></p>"
-								+ "<p> Recipient: <b>" + party + "</b></p>"
+	var infoBox = "<p> Source: <b>" + donor + "</b> " +  "<span><img src='" + imageFile + "' height='42' width='42' onError='this.src=\"https://github.com/favicon.ico\";'></span></p>" 	
+	
+	 							+ "<p> Recipient: <b>" + party + "</b></p>"
 								+ "<p> Type of donor: <b>" + entity + "</b></p>"
 								+ "<p> Total value: <b>&#163;" + comma(amount) + "</b></p>";
 
