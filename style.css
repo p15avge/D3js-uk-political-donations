@@ -39,37 +39,25 @@ li {
     left: 650px;
     width: 272px;
 }
-#view-amount-type {
-    height: 100%;
-}
-#To50000 {
-    left: 150px;
-    top: 465px;    
+/* position of new text of new split by */
+#ID25K {
+    left: 120px;
+    top: 500px;
     position: absolute;
 }
-#To100000 {
-    left: 425px;
-    top: 465px;
-    position: absolute;
-}
-#To500000 {
-    left: 700px;
-    top: 465px;
-    position: absolute;
-}
-#To1000000 {
-    left: 150px;
-    top: 100px;
+#ID500K {
+    left: 550px;
+    top: 500px;
     position: absolute;    
 }
-#To5000000 {
-    left: 425px;
-    top: 100px;
+#ID5M {
+    left: 120px;
+    top: 140px;
     position: absolute; 
 }
-#To20000000 {    
-    left: 700px;
-    top: 100px;
+#ID20M {    
+    left: 550px;
+    top: 140px;
     position: absolute;    
 }
 
