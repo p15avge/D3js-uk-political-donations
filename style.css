@@ -244,11 +244,4 @@ https://github.com/yui/pure/blob/master/LICENSE.md
 .zoom:hover{
     font-size : 2em;
 }
-.zoomforh1{
-    -webkit-transition: font-size .8s; /* Safari */
-    transition: font-size .8s;
-}
 
-.zoomforh1:hover{
-    font-size : 2.5em;
-}
